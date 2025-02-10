@@ -40,6 +40,8 @@ dependencies {
     driver 'org.xerial:sqlite-jdbc:3.42.0.0'
 }
 
+System.setProperty("file.encoding", "UTF-8");
+
 // make a driver copy, per https://stackoverflow.com/questions/51676049/cannot-change-strategy-of-configuration-sqlite
 // NOTE: this continues to result in warnings: Configuration 'driver' was resolved during configuration time.\n This is a build performance and scalability issue.
 URLClassLoader loader = GroovyObject.class.classLoader
