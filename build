@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Modifying source code..."
+
+# Ensure gradlew is executable
+dos2unix /app/gradlew && chmod +x /app/gradlew
+
+# Update config url config file with custom api urls.
+CONFIG_FILE_PATH="/app/wiglewifiwardriving/src/main/java/net/wigle/wigleandroid/util/UrlConfig.java"
+REG_URL="${WIGLE_BASE_URL}/register"
+for var in "API_DOMAIN" "WIGLE_BASE_URL" "REG_URL"; do
+  sed -i "s|\( $var = \)[^;]*\(;\)|\1\"${!var}\"\2|" $CONFIG_FILE_PATH; 
+done
+
+# Set up local.properties with API Key
+echo "MAPS_API_KEY=$MAPS_KEY" > /app/local.properties
+echo "sdk.dir=$ANDROID_HOME" >> /app/local.properties
+echo "API_DOMAIN=$API_DOMAIN" >> /app/local.properties
+echo "WIGLE_BASE_URL=$WIGLE_BASE_URL" >> /app/local.properties
+
+echo "Source modification complete."
+
+# Build the project
+exec ./gradlew build --no-daemon

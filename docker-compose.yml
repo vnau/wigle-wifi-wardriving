@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  wigle-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app  # Ensures the latest local files are always available
+    environment:
+      - MAPS_KEY=${MAPS_KEY} # Pass the API key at runtime
+      - API_DOMAIN=${API_DOMAIN} # Pass the API domain (api.wigle.net) 
+      - WIGLE_BASE_URL=${WIGLE_BASE_URL} # Pass the Wigle base URL (https://wigle.net) 
+    stdin_open: true
+    tty: true
+    command: ["bash", "-c", "dos2unix /app/build && chmod +x /app/build && ./build"]
